@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogOut } from "lucide-react";
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -8,6 +9,7 @@ interface LayoutProps {
 
 const Layout = ({ children }: LayoutProps) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { isAuthenticated, user, logout } = useAuth();
 
   const navLinks = [
     { href: "/", label: "Accueil" },
@@ -44,12 +46,28 @@ const Layout = ({ children }: LayoutProps) => {
                   {link.label}
                 </Link>
               ))}
-              <Link
-                to="/login"
-                className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium text-sm"
-              >
-                Se connecter
-              </Link>
+              {isAuthenticated && user ? (
+                <div className="flex items-center gap-4 pl-4 border-l border-border">
+                  <div className="text-right">
+                    <p className="font-medium text-sm text-foreground">{user.name}</p>
+                    <p className="text-xs text-muted-foreground capitalize">{user.role}</p>
+                  </div>
+                  <button
+                    onClick={logout}
+                    className="px-4 py-2 bg-destructive/10 text-destructive rounded-lg hover:bg-destructive/20 transition-colors font-medium text-sm flex items-center gap-2"
+                  >
+                    <LogOut size={16} />
+                    Déconnecter
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  to="/login"
+                  className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium text-sm"
+                >
+                  Se connecter
+                </Link>
+              )}
             </nav>
 
             {/* Mobile Menu Button */}
@@ -75,13 +93,32 @@ const Layout = ({ children }: LayoutProps) => {
                   {link.label}
                 </Link>
               ))}
-              <Link
-                to="/login"
-                className="block w-full px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium text-center mt-4"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Se connecter
-              </Link>
+              {isAuthenticated && user ? (
+                <>
+                  <div className="py-2 border-t border-border mt-2 pt-2">
+                    <p className="font-medium text-foreground">{user.name}</p>
+                    <p className="text-sm text-muted-foreground capitalize">{user.role}</p>
+                  </div>
+                  <button
+                    onClick={() => {
+                      logout();
+                      setMobileMenuOpen(false);
+                    }}
+                    className="w-full px-4 py-2 bg-destructive/10 text-destructive rounded-lg hover:bg-destructive/20 transition-colors font-medium flex items-center justify-center gap-2"
+                  >
+                    <LogOut size={16} />
+                    Déconnecter
+                  </button>
+                </>
+              ) : (
+                <Link
+                  to="/login"
+                  className="block w-full px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium text-center mt-4"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Se connecter
+                </Link>
+              )}
             </nav>
           )}
         </div>

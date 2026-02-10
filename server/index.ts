@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import { handleDemo } from "./routes/demo";
+import { handleLogin, handleSignup, handleVerifyToken } from "./routes/auth";
 
 export function createServer() {
   const app = express();
@@ -18,6 +19,11 @@ export function createServer() {
   });
 
   app.get("/api/demo", handleDemo);
+
+  // Auth routes
+  app.post("/api/auth/login", handleLogin);
+  app.post("/api/auth/signup", handleSignup);
+  app.get("/api/auth/verify", handleVerifyToken);
 
   return app;
 }
