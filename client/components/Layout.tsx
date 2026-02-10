@@ -21,16 +21,16 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-white shadow-sm border-b border-border">
+      <header className="sticky top-0 z-50 bg-white shadow-sm border-b border-border/50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-lg">CH</span>
+            <Link to="/" className="flex items-center gap-2 group">
+              <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center group-hover:shadow-lg transition-shadow duration-300">
+                <span className="text-primary-foreground font-bold text-lg font-poppins">CH</span>
               </div>
               <div className="hidden sm:block">
-                <h1 className="text-xl font-bold text-primary">Casa Heritage</h1>
+                <h1 className="text-xl font-bold text-primary font-poppins">Casa Heritage</h1>
                 <p className="text-xs text-muted-foreground">Casablanca</p>
               </div>
             </Link>
@@ -54,7 +54,7 @@ const Layout = ({ children }: LayoutProps) => {
                   </div>
                   <button
                     onClick={logout}
-                    className="px-4 py-2 bg-destructive/10 text-destructive rounded-lg hover:bg-destructive/20 transition-colors font-medium text-sm flex items-center gap-2"
+                    className="px-4 py-2 bg-destructive/10 text-destructive rounded-xl hover:bg-destructive/20 transition-colors duration-300 font-medium text-sm flex items-center gap-2"
                   >
                     <LogOut size={16} />
                     Déconnecter
@@ -63,7 +63,7 @@ const Layout = ({ children }: LayoutProps) => {
               ) : (
                 <Link
                   to="/login"
-                  className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium text-sm"
+                  className="px-4 py-2 bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 transition-colors duration-300 font-medium text-sm"
                 >
                   Se connecter
                 </Link>
@@ -72,7 +72,7 @@ const Layout = ({ children }: LayoutProps) => {
 
             {/* Mobile Menu Button */}
             <button
-              className="md:hidden p-2"
+              className="md:hidden p-2 hover:bg-muted rounded-lg transition-colors duration-300"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Toggle menu"
             >
@@ -104,7 +104,7 @@ const Layout = ({ children }: LayoutProps) => {
                       logout();
                       setMobileMenuOpen(false);
                     }}
-                    className="w-full px-4 py-2 bg-destructive/10 text-destructive rounded-lg hover:bg-destructive/20 transition-colors font-medium flex items-center justify-center gap-2"
+                    className="w-full px-4 py-2 bg-destructive/10 text-destructive rounded-xl hover:bg-destructive/20 transition-colors duration-300 font-medium flex items-center justify-center gap-2"
                   >
                     <LogOut size={16} />
                     Déconnecter
@@ -113,7 +113,7 @@ const Layout = ({ children }: LayoutProps) => {
               ) : (
                 <Link
                   to="/login"
-                  className="block w-full px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium text-center mt-4"
+                  className="block w-full px-4 py-2 bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 transition-colors duration-300 font-medium text-center mt-4"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Se connecter
@@ -132,48 +132,48 @@ const Layout = ({ children }: LayoutProps) => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div>
-              <h3 className="font-bold text-lg mb-4">Casa Heritage</h3>
+              <h3 className="font-bold text-lg mb-4 font-poppins">Casa Heritage</h3>
               <p className="text-sm opacity-90">
                 Valoriser le patrimoine et les événements culturels de Casablanca
               </p>
             </div>
             <div>
-              <h4 className="font-bold mb-4">Explorez</h4>
+              <h4 className="font-bold mb-4 font-poppins">Explorez</h4>
               <ul className="space-y-2 text-sm">
                 <li>
-                  <Link to="/heritage" className="opacity-90 hover:opacity-100">
+                  <Link to="/heritage" className="opacity-90 hover:opacity-100 transition-opacity duration-300">
                     Patrimoine
                   </Link>
                 </li>
                 <li>
-                  <Link to="/events" className="opacity-90 hover:opacity-100">
+                  <Link to="/events" className="opacity-90 hover:opacity-100 transition-opacity duration-300">
                     Événements
                   </Link>
                 </li>
                 <li>
-                  <Link to="/map" className="opacity-90 hover:opacity-100">
+                  <Link to="/map" className="opacity-90 hover:opacity-100 transition-opacity duration-300">
                     Carte
                   </Link>
                 </li>
               </ul>
             </div>
             <div>
-              <h4 className="font-bold mb-4">Compte</h4>
+              <h4 className="font-bold mb-4 font-poppins">Compte</h4>
               <ul className="space-y-2 text-sm">
                 <li>
-                  <Link to="/login" className="opacity-90 hover:opacity-100">
+                  <Link to="/login" className="opacity-90 hover:opacity-100 transition-opacity duration-300">
                     Connexion
                   </Link>
                 </li>
                 <li>
-                  <Link to="/signup" className="opacity-90 hover:opacity-100">
+                  <Link to="/signup" className="opacity-90 hover:opacity-100 transition-opacity duration-300">
                     Inscription
                   </Link>
                 </li>
               </ul>
             </div>
             <div>
-              <h4 className="font-bold mb-4">Contact</h4>
+              <h4 className="font-bold mb-4 font-poppins">Contact</h4>
               <ul className="space-y-2 text-sm opacity-90">
                 <li>Email: info@casaheritage.ma</li>
                 <li>Casablanca, Maroc</li>

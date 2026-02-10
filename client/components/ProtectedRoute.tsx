@@ -13,8 +13,8 @@ const ProtectedRoute = ({ children, requiredRole }: ProtectedRouteProps) => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="text-center">
-          <div className="w-12 h-12 rounded-full border-4 border-border border-t-primary animate-spin mx-auto mb-4"></div>
-          <p className="text-foreground/70">Chargement...</p>
+          <div className="w-12 h-12 rounded-full border-4 border-border border-t-primary animate-spin mx-auto mb-4 animate-fade-in"></div>
+          <p className="text-foreground/70 font-medium">Chargement...</p>
         </div>
       </div>
     );

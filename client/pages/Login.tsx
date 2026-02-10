@@ -49,13 +49,13 @@ const Login = () => {
       <section className="py-20 md:py-28 flex-1">
         <div className="container mx-auto px-4">
           <div className="max-w-md mx-auto">
-            <div className="bg-white rounded-lg shadow-lg p-8 border border-border">
+            <div className="bg-white rounded-2xl shadow-lg p-8 border border-border/30">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
-                  <LogIn size={24} className="text-primary-foreground" />
+                <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center">
+                  <LogIn size={24} className="text-white" />
                 </div>
                 <div>
-                  <h1 className="text-3xl font-bold text-primary">Se connecter</h1>
+                  <h1 className="text-3xl font-bold text-primary font-poppins">Se connecter</h1>
                 </div>
               </div>
 
@@ -64,7 +64,7 @@ const Login = () => {
               </p>
 
               {error && (
-                <div className="mb-6 p-4 bg-destructive/10 border border-destructive/30 rounded-lg flex gap-3">
+                <div className="mb-6 p-4 bg-destructive/10 border border-destructive/30 rounded-xl flex gap-3">
                   <AlertCircle size={20} className="text-destructive flex-shrink-0 mt-0.5" />
                   <p className="text-sm text-destructive">{error}</p>
                 </div>
@@ -80,10 +80,10 @@ const Login = () => {
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className={`w-full px-4 py-2 rounded-lg border transition-colors outline-none ${
+                    className={`w-full px-4 py-3 rounded-xl border transition-all duration-300 outline-none ${
                       fieldErrors.email
-                        ? "border-destructive bg-destructive/5"
-                        : "border-border hover:border-foreground/30 focus:border-primary"
+                        ? "border-destructive bg-destructive/5 focus:border-destructive"
+                        : "border-border bg-white hover:border-foreground/30 focus:border-primary focus:ring-2 focus:ring-primary/10"
                     }`}
                     placeholder="votre@email.com"
                     disabled={isLoading}
@@ -102,10 +102,10 @@ const Login = () => {
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className={`w-full px-4 py-2 rounded-lg border transition-colors outline-none ${
+                    className={`w-full px-4 py-3 rounded-xl border transition-all duration-300 outline-none ${
                       fieldErrors.password
-                        ? "border-destructive bg-destructive/5"
-                        : "border-border hover:border-foreground/30 focus:border-primary"
+                        ? "border-destructive bg-destructive/5 focus:border-destructive"
+                        : "border-border bg-white hover:border-foreground/30 focus:border-primary focus:ring-2 focus:ring-primary/10"
                     }`}
                     placeholder="••••••••"
                     disabled={isLoading}
@@ -118,7 +118,7 @@ const Login = () => {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-semibold flex items-center justify-center gap-2"
+                  className="w-full px-6 py-3 bg-secondary text-white rounded-xl hover:bg-secondary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300 font-semibold flex items-center justify-center gap-2 shadow-md hover:shadow-lg"
                 >
                   {isLoading ? (
                     <>
@@ -145,7 +145,7 @@ const Login = () => {
 
               <Link
                 to="/"
-                className="w-full px-6 py-3 border-2 border-primary text-primary rounded-lg hover:bg-primary/5 transition-colors font-semibold text-center block"
+                className="w-full px-6 py-3 border-2 border-primary text-primary rounded-xl hover:bg-primary/5 transition-all duration-300 font-semibold text-center block"
               >
                 Continuer sans compte
               </Link>

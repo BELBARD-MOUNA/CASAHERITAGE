@@ -1,5 +1,5 @@
 /** @import must precede all other statements */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -7,101 +7,83 @@
 
 @layer base {
   /**
-   * Tailwind CSS theme - Casa Heritage
-   * Moroccan-inspired color palette with jewel tones and earth elements
-   * tailwind.config.ts expects the following color variables to be expressed as HSL values.
-   * A different format will require also updating the theme in tailwind.config.ts.
+   * Casa Heritage Modern Palette
+   * Modern, premium, cultural design system
+   * Colors: Deep Green, Atlantic Blue, Terracotta
+   * tailwind.config.ts expects HSL format
   */
   :root {
-    /* Light mode - Clean & Modern with Moroccan touches */
-    --background: 45 30% 96%;
-    --foreground: 12 50% 20%;
+    /* Main Colors - Casa Heritage Modern Style */
+    --primary: 172 81% 28%;          /* Deep Modern Green #0F766E */
+    --secondary: 204 93% 56%;        /* Atlantic Blue #0EA5E9 */
+    --accent: 25 95% 53%;            /* Chic Terracotta #F97316 */
 
-    --card: 0 0% 100%;
-    --card-foreground: 12 50% 20%;
+    /* Background & Text */
+    --background: 23 62% 97%;        /* Sandy Beige #F8F5F0 */
+    --foreground: 208 25% 19%;       /* Anthracite Gray #1F2933 */
+
+    --card: 0 0% 100%;               /* Pure White */
+    --card-foreground: 208 25% 19%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 12 50% 20%;
+    --popover-foreground: 208 25% 19%;
 
-    /* Primary: Deep teal-blue inspired by zellige tiles */
-    --primary: 12 40% 38%;
-    --primary-foreground: 0 0% 98%;
-
-    /* Secondary: Warm terracotta earth tone */
-    --secondary: 20 65% 50%;
+    --primary-foreground: 0 0% 100%; /* White text on primary */
     --secondary-foreground: 0 0% 100%;
+    --accent-foreground: 0 0% 100%;
 
-    --muted: 45 20% 80%;
-    --muted-foreground: 12 15% 45%;
-
-    /* Accent: Rich gold for highlights */
-    --accent: 45 85% 45%;
-    --accent-foreground: 12 50% 15%;
+    --muted: 211 14% 85%;            /* Light gray for muted elements */
+    --muted-foreground: 211 14% 45%; /* Soft Gray #6B7280 */
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 45 20% 85%;
-    --input: 45 20% 92%;
-    --ring: 12 40% 38%;
+    --border: 211 14% 90%;           /* Light border */
+    --input: 0 0% 100%;              /* White input fields */
+    --ring: 172 81% 28%;             /* Green focus ring */
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;               /* Slightly larger radius for modern look */
 
-    /* Gold color variants */
-    --gold: 45 85% 45%;
-    --gold-light: 45 90% 70%;
-
-    --sidebar-background: 45 30% 96%;
-    --sidebar-foreground: 12 50% 20%;
-    --sidebar-primary: 12 40% 38%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 45 85% 45%;
-    --sidebar-accent-foreground: 12 50% 15%;
-    --sidebar-border: 45 20% 85%;
-    --sidebar-ring: 12 40% 38%;
+    /* Sidebar */
+    --sidebar-background: 23 62% 97%;
+    --sidebar-foreground: 208 25% 19%;
+    --sidebar-primary: 172 81% 28%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 25 95% 53%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 211 14% 90%;
+    --sidebar-ring: 172 81% 28%;
   }
 
   .dark {
-    /* Dark mode */
-    --background: 12 30% 15%;
-    --foreground: 45 30% 90%;
+    --primary: 172 81% 35%;          /* Slightly lighter for dark mode */
+    --secondary: 204 93% 60%;
+    --accent: 25 95% 58%;
 
-    --card: 12 35% 22%;
-    --card-foreground: 45 30% 90%;
+    --background: 208 25% 12%;
+    --foreground: 0 0% 95%;
 
-    --popover: 12 35% 22%;
-    --popover-foreground: 45 30% 90%;
+    --card: 208 25% 18%;
+    --card-foreground: 0 0% 95%;
 
-    --primary: 12 40% 55%;
-    --primary-foreground: 12 50% 12%;
+    --popover: 208 25% 18%;
+    --popover-foreground: 0 0% 95%;
 
-    --secondary: 20 65% 55%;
-    --secondary-foreground: 12 50% 12%;
+    --muted: 208 25% 30%;
+    --muted-foreground: 211 14% 70%;
 
-    --muted: 12 20% 40%;
-    --muted-foreground: 45 20% 70%;
+    --border: 208 25% 25%;
+    --input: 208 25% 22%;
+    --ring: 172 81% 40%;
 
-    --accent: 45 85% 50%;
-    --accent-foreground: 12 50% 12%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 12 25% 30%;
-    --input: 12 25% 30%;
-    --ring: 45 85% 50%;
-
-    --gold: 45 85% 50%;
-    --gold-light: 45 90% 65%;
-
-    --sidebar-background: 12 30% 15%;
-    --sidebar-foreground: 45 30% 90%;
-    --sidebar-primary: 12 40% 55%;
-    --sidebar-primary-foreground: 12 50% 12%;
-    --sidebar-accent: 45 85% 50%;
-    --sidebar-accent-foreground: 12 50% 12%;
-    --sidebar-border: 12 25% 30%;
-    --sidebar-ring: 45 85% 50%;
+    --sidebar-background: 208 25% 12%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 172 81% 35%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 25 95% 58%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 208 25% 25%;
+    --sidebar-ring: 172 81% 40%;
   }
 }
 
@@ -112,9 +94,28 @@
 
   body {
     @apply bg-background text-foreground;
+    font-family: "Inter", sans-serif;
   }
 
-  :where(p, span, li, h1, h2, h3, h4, h5, h6, a, button, label, td, th) {
+  /* Modern Typography */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+  }
+
+  h1 {
+    @apply text-4xl md:text-5xl;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl;
+  }
+
+  h3 {
+    @apply text-2xl md:text-3xl;
+  }
+
+  :where(p, span, li, a, button, label, td, th) {
     overflow-wrap: anywhere;
     word-break: break-word;
   }
@@ -123,5 +124,52 @@
   code {
     overflow-x: auto;
     white-space: pre;
+  }
+}
+
+@layer components {
+  /* Subtle animations */
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slide-in {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.5s ease-out;
+  }
+
+  .animate-slide-in {
+    animation: slide-in 0.5s ease-out;
+  }
+
+  /* Button animations */
+  .btn-hover-scale {
+    @apply transition-transform duration-300 hover:scale-105;
+  }
+
+  .btn-hover-elevation {
+    @apply transition-shadow duration-300 hover:shadow-lg;
+  }
+
+  /* Card hover effects */
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-xl hover:border-primary;
   }
 }
