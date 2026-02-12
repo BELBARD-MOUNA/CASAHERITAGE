@@ -10,9 +10,11 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Heritage from "./pages/Heritage";
 import Events from "./pages/Events";
+import EventDetail from "./pages/EventDetail";
 import Map from "./pages/Map";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import AdminDashboard from "./pages/AdminDashboard";
 
 const queryClient = new QueryClient();
 
@@ -24,15 +26,17 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/heritage" element={<Heritage />} />
-            <Route path="/events" element={<Events />} />
-            <Route path="/map" element={<Map />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/heritage" element={<Heritage />} />
+          <Route path="/events" element={<Events />} />
+          <Route path="/events/:id" element={<EventDetail />} />
+          <Route path="/map" element={<Map />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
         </BrowserRouter>
       </AuthProvider>
     </TooltipProvider>

@@ -10,3 +10,29 @@
 export interface DemoResponse {
   message: string;
 }
+
+/**
+ * Event Registration Types
+ */
+export interface EventRegistration {
+  id: string;
+  eventId: string;
+  name: string;
+  email: string;
+  role: "student" | "professional" | "other";
+  message?: string;
+  registeredAt: Date;
+}
+
+export interface EventRegistrationRequest {
+  name: string;
+  email: string;
+  role: "student" | "professional" | "other";
+  message?: string;
+}
+
+export interface EventRegistrationResponse {
+  success: boolean;
+  registration?: EventRegistration;
+  error?: string;
+}

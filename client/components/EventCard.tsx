@@ -104,13 +104,17 @@ const EventCard = ({
         </div>
 
         <Link
-          to={`/events/${id}`}
+          to={isFull ? "#" : `/events/${id}`}
           className={`w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
             isFull
               ? "bg-muted text-muted-foreground cursor-not-allowed"
               : "bg-secondary text-white hover:bg-secondary/90 shadow-md hover:shadow-lg"
           }`}
-          onClick={(e) => isFull && e.preventDefault()}
+          onClick={(e) => {
+            if (isFull) {
+              e.preventDefault();
+            }
+          }}
         >
           {isFull ? "Complet" : "S'inscrire"}
           {!isFull && <ArrowRight size={18} />}
