@@ -1,0 +1,35 @@
+/* Import Leaflet styles */
+@import "leaflet/dist/leaflet.css";
+
+.transport-map {
+  z-index: 0;
+}
+
+/* Leaflet controls positioning */
+.leaflet-control-container {
+  z-index: 5;
+}
+
+/* Custom popup styling */
+.leaflet-popup-content-wrapper {
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.leaflet-popup-content {
+  margin: 0;
+  width: auto !important;
+  padding: 12px;
+}
+
+.leaflet-popup-tip {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+}
+
+/* Hover effect for markers */
+.leaflet-interactive:hover {
+  cursor: pointer;
+  opacity: 1 !important;
+  stroke-width: 3 !important;
+}
