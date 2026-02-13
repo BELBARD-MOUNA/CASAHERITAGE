@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import Layout from "@/components/Layout";
-import { MapPin, Clock, Users, BookOpen, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
+import { MapPin, Clock, Users, BookOpen, CheckCircle, AlertCircle, Loader2, Calendar, Share2, QrCode } from "lucide-react";
 
 interface PlanningItem {
   time: string;
@@ -51,6 +51,48 @@ const EventDetail = () => {
 
   const spotsAvailable = event.capacity - event.registrationsCount;
   const isFull = spotsAvailable <= 0;
+
+  // Calendar integration
+  const generateGoogleCalendarLink = () => {
+    const startDate = new Date(event.startDate);
+    const endDate = new Date(event.startDate);
+    endDate.setHours(endDate.getHours() + 3);
+
+    const formatDate = (date: Date) => date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+
+    const params = new URLSearchParams({
+      action: "TEMPLATE",
+      text: event.title,
+      details: event.description,
+      location: event.quartier,
+      startTime: formatDate(startDate),
+      endTime: formatDate(endDate),
+    });
+
+    return `https://calendar.google.com/calendar/render?${params.toString()}`;
+  };
+
+  const generateAppleCalendarLink = () => {
+    const startDate = new Date(event.startDate);
+    const title = encodeURIComponent(event.title);
+    const location = encodeURIComponent(event.quartier);
+    const notes = encodeURIComponent(event.description);
+
+    return `webcal://calendar.app/add?title=${title}&location=${location}&notes=${notes}`;
+  };
+
+  // Simple QR Code representation (encoded event ID)
+  const qrCodeValue = useMemo(() => {
+    return `${window.location.origin}/events/${id}`;
+  }, [id]);
+
+  const handleAddToCalendar = (type: "google" | "apple") => {
+    if (type === "google") {
+      window.open(generateGoogleCalendarLink(), "_blank");
+    } else {
+      window.open(generateAppleCalendarLink(), "_blank");
+    }
+  };
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -222,10 +264,58 @@ const EventDetail = () => {
 
             {/* Sidebar - Registration */}
             <div className="lg:col-span-1">
-              <div className="sticky top-24">
+              <div className="sticky top-24 space-y-6">
+                {/* Quick Actions */}
+                {!submitSuccess && (
+                  <>
+                    <div className="bg-gradient-to-br from-primary/10 to-secondary/10 rounded-2xl p-6 border border-primary/20 shadow-lg">
+                      <h4 className="font-bold text-foreground mb-4 flex items-center gap-2">
+                        <Share2 size={18} className="text-secondary" />
+                        Actions rapides
+                      </h4>
+                      <div className="space-y-2">
+                        <button
+                          onClick={() => handleAddToCalendar("google")}
+                          className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-white/80 hover:bg-white text-primary rounded-lg font-medium transition-all duration-300 hover:shadow-md border border-primary/20"
+                        >
+                          <Calendar size={16} />
+                          Google Calendar
+                        </button>
+                        <button
+                          onClick={() => handleAddToCalendar("apple")}
+                          className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-white/80 hover:bg-white text-secondary rounded-lg font-medium transition-all duration-300 hover:shadow-md border border-secondary/20"
+                        >
+                          <Calendar size={16} />
+                          Apple Calendar
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* QR Code */}
+                    <div className="bg-white rounded-2xl p-6 border border-border/30 shadow-lg">
+                      <h4 className="font-bold text-foreground mb-4 flex items-center gap-2">
+                        <QrCode size={18} className="text-accent" />
+                        Partager
+                      </h4>
+                      <div className="bg-gradient-to-br from-accent/5 to-primary/5 rounded-lg p-6 flex items-center justify-center mb-3 border-2 border-dashed border-accent/20">
+                        <div className="text-center">
+                          <QrCode size={56} className="mx-auto text-accent/50 mb-2" />
+                          <p className="text-xs text-muted-foreground">Lien d'inscription</p>
+                        </div>
+                      </div>
+                      <p className="text-xs text-muted-foreground text-center">
+                        Lien direct:{" "}
+                        <span className="block font-mono text-primary font-semibold mt-2 break-all">
+                          {qrCodeValue.split("//")[1]}
+                        </span>
+                      </p>
+                    </div>
+                  </>
+                )}
+
                 {submitSuccess ? (
-                  <div className="bg-white rounded-2xl p-8 border-2 border-primary/30 text-center">
-                    <CheckCircle size={48} className="text-primary mx-auto mb-4" />
+                  <div className="bg-white rounded-2xl p-8 border-2 border-primary/30 text-center shadow-xl">
+                    <CheckCircle size={48} className="text-primary mx-auto mb-4 animate-bounce" />
                     <h3 className="text-2xl font-bold text-primary mb-2 font-poppins">
                       Merci!
                     </h3>
@@ -355,32 +445,32 @@ const EventDetail = () => {
                     </form>
                   </div>
                 ) : (
-                  <div className="bg-white rounded-2xl p-8 border border-border/30">
+                  <div className="bg-white rounded-2xl p-8 border border-border/30 shadow-lg">
                     <div className="mb-8">
                       <p className="text-sm text-muted-foreground mb-2">Places disponibles</p>
-                      <div className="w-full bg-border rounded-full h-2 overflow-hidden">
+                      <div className="w-full bg-border rounded-full h-2.5 overflow-hidden">
                         <div
-                          className="bg-primary h-full transition-all duration-300"
+                          className="bg-gradient-to-r from-accent to-primary h-full transition-all duration-500"
                           style={{
                             width: `${((event.registrationsCount / event.capacity) * 100)}%`,
                           }}
                         ></div>
                       </div>
-                      <p className="text-sm font-semibold text-primary mt-2">
-                        {spotsAvailable > 0 ? `${spotsAvailable} place(s) restante(s)` : "Complet"}
+                      <p className="text-sm font-semibold text-primary mt-3">
+                        {spotsAvailable > 0 ? `${spotsAvailable} place${spotsAvailable > 1 ? "s" : ""} restante${spotsAvailable > 1 ? "s" : ""}` : "Complet"}
                       </p>
                     </div>
 
                     <button
                       onClick={() => !isFull && setShowForm(true)}
                       disabled={isFull}
-                      className={`w-full px-6 py-4 rounded-xl font-semibold transition-all duration-300 shadow-md hover:shadow-lg ${
+                      className={`w-full px-6 py-4 rounded-xl font-semibold transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 ${
                         isFull
-                          ? "bg-muted text-muted-foreground cursor-not-allowed"
+                          ? "bg-muted text-muted-foreground cursor-not-allowed opacity-60"
                           : "bg-secondary text-white hover:bg-secondary/90"
                       }`}
                     >
-                      {isFull ? "Événement Complet" : "S'inscrire"}
+                      {isFull ? "Événement Complet" : "S'inscrire maintenant"}
                     </button>
 
                     <Link

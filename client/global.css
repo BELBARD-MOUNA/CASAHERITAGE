@@ -172,4 +172,74 @@
   .card-hover {
     @apply transition-all duration-300 hover:shadow-xl hover:border-primary;
   }
+
+  /* Event badge animations */
+  @keyframes pulse-glow {
+    0%, 100% {
+      opacity: 1;
+      box-shadow: 0 0 0 0 rgba(249, 115, 22, 0.7);
+    }
+    50% {
+      opacity: 0.8;
+      box-shadow: 0 0 0 8px rgba(249, 115, 22, 0);
+    }
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2s infinite;
+  }
+
+  /* Smooth scale animation */
+  @keyframes smooth-scale {
+    from {
+      transform: scale(0.95);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  .animate-smooth-scale {
+    animation: smooth-scale 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* Button press effect */
+  @keyframes button-press {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-2px);
+    }
+  }
+
+  .button-hover-lift {
+    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lg;
+  }
+
+  /* Smooth transitions for form inputs */
+  .form-input-focus {
+    @apply transition-all duration-300 focus:ring-2 focus:ring-primary/30 focus:shadow-md;
+  }
+
+  /* Badge animations */
+  .badge-hot {
+    @apply animate-bounce;
+  }
+
+  /* Icon spin animation */
+  @keyframes icon-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .animate-icon-spin {
+    animation: icon-spin 2s linear infinite;
+  }
 }
