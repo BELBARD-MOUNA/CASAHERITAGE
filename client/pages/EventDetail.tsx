@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { MapPin, Clock, Users, BookOpen, CheckCircle, AlertCircle, Loader2, Calendar, Share2, QrCode } from "lucide-react";
+import AvantApresSlider from "@/components/AvantApresSlider";
 
 interface PlanningItem {
   time: string;
@@ -225,6 +226,26 @@ const EventDetail = () => {
                     </p>
                   </div>
                 )}
+              </div>
+
+              {/* Heritage: Before/After Comparison */}
+              <div className="mb-12">
+                <div className="mb-6">
+                  <h2 className="text-3xl font-bold text-primary mb-2 font-poppins">
+                    🏛️ Patrimoine : Évolution Historique
+                  </h2>
+                  <p className="text-foreground/70">
+                    Découvrez la transformation remarquable de Casablanca au cours du siècle dernier. Glissez pour comparer l'architecture historique et contemporaine.
+                  </p>
+                </div>
+                <AvantApresSlider
+                  beforeImage="https://images.unsplash.com/photo-1512519048144-17d9e87b8c1d?w=1200&h=600&fit=crop"
+                  afterImage="https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&h=600&fit=crop"
+                  beforeLabel="Architecture Coloniale (1920s)"
+                  afterLabel="Casablanca Moderne (2024)"
+                  beforeAlt="Vue historique de Casablanca"
+                  afterAlt="Vue moderne de Casablanca"
+                />
               </div>
 
               {/* Description */}
