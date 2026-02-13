@@ -3,39 +3,64 @@ import Layout from "@/components/Layout";
 import TransportMap from "@/components/TransportMap";
 import TransportFilters from "@/components/TransportFilters";
 import TransportInfo from "@/components/TransportInfo";
-import { TransportLine } from "@/data/transport";
 
 const Map = () => {
-  const [activeTransports, setActiveTransports] = useState({
-    tramway: true,
-    busway: true,
-    bus: true,
-    taxi_rouge: true,
-    taxi_blanc: true,
+  const [selectedTramwayLine, setSelectedTramwayLine] = useState<string | null>(
+    null
+  );
+  const [selectedBusWayLine, setSelectedBusWayLine] = useState<string | null>(
+    null
+  );
+  const [activeProximityPoints, setActiveProximityPoints] = useState({
+    bus: false,
+    taxi_rouge: false,
+    taxi_blanc: false,
   });
 
   const [selectedInfo, setSelectedInfo] = useState<{
-    line: TransportLine | null;
-    station: any | null;
-  }>({
-    line: null,
-    station: null,
-  });
+    type: "station" | "proximity" | null;
+    station?: any;
+    line?: any;
+    point?: any;
+    proximitySet?: any;
+  } | null>(null);
 
-  const handleToggleTransport = (
-    type: keyof typeof activeTransports
-  ) => {
-    setActiveTransports((prev) => ({
+  const handleSelectTramwayLine = (lineId: string | null) => {
+    setSelectedTramwayLine(lineId);
+    // Clear busway when selecting tramway
+    if (lineId) {
+      setSelectedBusWayLine(null);
+    }
+  };
+
+  const handleSelectBusWayLine = (lineId: string | null) => {
+    setSelectedBusWayLine(lineId);
+    // Clear tramway when selecting busway
+    if (lineId) {
+      setSelectedTramwayLine(null);
+    }
+  };
+
+  const handleToggleProximityPoint = (type: "bus" | "taxi_rouge" | "taxi_blanc") => {
+    setActiveProximityPoints((prev) => ({
       ...prev,
       [type]: !prev[type],
     }));
   };
 
-  const handleMarkerClick = (data: any) => {
-    setSelectedInfo({
-      line: data.line || null,
-      station: data || null,
+  const handleReset = () => {
+    setSelectedTramwayLine(null);
+    setSelectedBusWayLine(null);
+    setActiveProximityPoints({
+      bus: false,
+      taxi_rouge: false,
+      taxi_blanc: false,
     });
+    setSelectedInfo(null);
+  };
+
+  const handleMarkerClick = (data: any) => {
+    setSelectedInfo(data);
   };
 
   return (
@@ -45,10 +70,10 @@ const Map = () => {
         <div className="container mx-auto px-4">
           <div className="text-center mb-8">
             <h1 className="text-4xl md:text-5xl font-bold text-primary mb-4 font-poppins">
-              Carte Interactive de Casablanca
+              🗺️ Carte Interactive de Casablanca
             </h1>
             <p className="text-lg text-foreground/70 max-w-2xl mx-auto">
-              Explorez les moyens de transport de Casablanca. Tramways, bus, taxis et plus encore!
+              Explorez les moyens de transport. Sélectionnez une ligne ou des points de proximité pour naviguer la ville.
             </p>
           </div>
         </div>
@@ -61,16 +86,24 @@ const Map = () => {
             {/* Filters Sidebar */}
             <div className="lg:col-span-1">
               <TransportFilters
-                activeTransports={activeTransports}
-                onToggle={handleToggleTransport}
+                selectedTramwayLine={selectedTramwayLine}
+                selectedBusWayLine={selectedBusWayLine}
+                activeProximityPoints={activeProximityPoints}
+                onSelectTramwayLine={handleSelectTramwayLine}
+                onSelectBusWayLine={handleSelectBusWayLine}
+                onToggleProximityPoint={handleToggleProximityPoint}
+                onReset={handleReset}
               />
             </div>
 
-            {/* Main Map */}
+            {/* Main Content */}
             <div className="lg:col-span-3">
+              {/* Map */}
               <div className="h-96 md:h-[600px] mb-6">
                 <TransportMap
-                  activeTransports={activeTransports}
+                  selectedTramwayLine={selectedTramwayLine}
+                  selectedBusWayLine={selectedBusWayLine}
+                  activeProximityPoints={activeProximityPoints}
                   onMarkerClick={handleMarkerClick}
                 />
               </div>
@@ -78,14 +111,8 @@ const Map = () => {
               {/* Info Panel */}
               <div className="mt-6">
                 <TransportInfo
-                  line={selectedInfo.line}
-                  station={selectedInfo.station}
-                  onClose={() =>
-                    setSelectedInfo({
-                      line: null,
-                      station: null,
-                    })
-                  }
+                  data={selectedInfo}
+                  onClose={() => setSelectedInfo(null)}
                 />
               </div>
             </div>
@@ -106,37 +133,37 @@ const Map = () => {
                 icon: "🚊",
                 title: "Tramway",
                 description:
-                  "Le tramway de Casablanca offre un système de transport rapide et moderne avec 4 lignes principales reliant les quartiers clés.",
+                  "4 lignes principales (T1, T2, T3, T4) reliant les quartiers clés avec un service fréquent.",
               },
               {
                 icon: "🚌",
                 title: "Busway",
                 description:
-                  "Lignes de bus rapides et fiables assurant les liaisons principales entre les zones urbaines de la ville.",
+                  "2 lignes rapides (BW1, BW2) assurant les liaisons principales entre zones urbaines.",
               },
               {
                 icon: "🚌",
                 title: "Bus Urbain",
                 description:
-                  "Réseau complet de bus desservant tous les quartiers de Casablanca avec des tarifs accessibles.",
+                  "Réseau complet desservant tous les quartiers avec des tarifs accessibles.",
               },
               {
                 icon: "🚕",
                 title: "Taxi Rouge",
                 description:
-                  "Taxis collectifs assurant les déplacements locaux à l'intérieur de Casablanca avec des tarifs raisonnables.",
+                  "Taxis collectifs pour les déplacements intra-urbains rapides et économiques.",
               },
               {
                 icon: "🚖",
                 title: "Taxi Blanc",
                 description:
-                  "Transport interurbain reliant Casablanca aux villes voisines (Rabat, Fez, Marrakech, etc.).",
+                  "Transport interurbain vers Rabat, Fez, Marrakech et autres villes voisines.",
               },
               {
                 icon: "🚂",
                 title: "Train (ONCF)",
                 description:
-                  "Liaisons ferroviaires reliant Casablanca à d'autres villes du Maroc avec confort et efficacité.",
+                  "Liaisons ferroviaires confortables vers les principales villes du Maroc.",
               },
             ].map((transport, idx) => (
               <div
@@ -159,31 +186,37 @@ const Map = () => {
         <div className="container mx-auto px-4">
           <div className="bg-secondary/10 rounded-2xl p-8 md:p-12 border border-secondary/20">
             <h2 className="text-2xl font-bold text-primary mb-6 font-poppins">
-              💡 Conseils de Navigation
+              💡 Guide d'Utilisation
             </h2>
             <ul className="space-y-4 text-foreground/80">
               <li className="flex gap-3">
                 <span className="text-secondary font-bold">✓</span>
                 <span>
-                  Utilisez les filtres pour afficher/masquer les moyens de transport
+                  <strong>Sélectionner une ligne:</strong> Cliquez sur T1, T2, BW1, etc. Une seule ligne s'affiche à la fois
                 </span>
               </li>
               <li className="flex gap-3">
                 <span className="text-secondary font-bold">✓</span>
                 <span>
-                  Cliquez sur une station pour voir les détails (quartier, horaires)
+                  <strong>Ajouter des points:</strong> Cochez les cases pour afficher Bus, Taxis Rouges ou Blancs
                 </span>
               </li>
               <li className="flex gap-3">
                 <span className="text-secondary font-bold">✓</span>
                 <span>
-                  Les couleurs des lignes correspondent aux différents types de transport
+                  <strong>Cliquer sur la carte:</strong> Sélectionnez une station ou un point pour voir les détails
                 </span>
               </li>
               <li className="flex gap-3">
                 <span className="text-secondary font-bold">✓</span>
                 <span>
-                  Zoomez/dézoomez avec la molette de la souris pour explorer la carte
+                  <strong>Auto-zoom:</strong> La carte se centre automatiquement sur votre sélection
+                </span>
+              </li>
+              <li className="flex gap-3">
+                <span className="text-secondary font-bold">✓</span>
+                <span>
+                  <strong>Réinitialiser:</strong> Cliquez sur "Réinitialiser" pour tout effacer et recommencer
                 </span>
               </li>
             </ul>

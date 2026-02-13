@@ -1,18 +1,23 @@
 import { X, Clock, MapPin, Zap } from "lucide-react";
-import { TransportLine } from "@/data/transport";
+import { TransportLine, ProximityPoint, PointsOfProximity } from "@/data/transport";
 
 interface TransportInfoProps {
-  line: TransportLine | null;
-  station: any | null;
+  data: {
+    type: "station" | "proximity" | null;
+    station?: any;
+    line?: TransportLine;
+    point?: ProximityPoint;
+    proximitySet?: PointsOfProximity;
+  } | null;
   onClose: () => void;
 }
 
-const TransportInfo = ({ line, station, onClose }: TransportInfoProps) => {
-  if (!line && !station) {
+const TransportInfo = ({ data, onClose }: TransportInfoProps) => {
+  if (!data || data.type === null) {
     return (
       <div className="bg-white rounded-2xl border border-border/30 p-8 text-center">
-        <p className="text-foreground/70">
-          Cliquez sur une station ou une ligne pour voir les détails
+        <p className="text-foreground/70 font-medium">
+          📍 Cliquez sur une station ou un point pour voir les détails
         </p>
       </div>
     );
@@ -35,24 +40,11 @@ const TransportInfo = ({ line, station, onClose }: TransportInfoProps) => {
     }
   };
 
-  const getTypeLabel = (type: string) => {
-    switch (type) {
-      case "tramway":
-        return "Tramway";
-      case "busway":
-        return "Busway";
-      case "bus":
-        return "Bus Urbain";
-      case "taxi_rouge":
-        return "Taxi Rouge";
-      case "taxi_blanc":
-        return "Taxi Blanc";
-      default:
-        return type;
-    }
-  };
+  // Station on a line
+  if (data.type === "station" && data.station && data.line) {
+    const station = data.station;
+    const line = data.line;
 
-  if (station && line) {
     return (
       <div className="bg-white rounded-2xl border border-border/30 p-6 relative">
         <button
@@ -64,13 +56,13 @@ const TransportInfo = ({ line, station, onClose }: TransportInfoProps) => {
 
         <div className="mb-6">
           <div className="flex items-center gap-3 mb-4">
-            <span className="text-3xl">{getTypeEmoji(line.type)}</span>
+            <span className="text-3xl">{getTypeEmoji(line.transportType)}</span>
             <div>
               <h3 className="text-xl font-bold text-primary font-poppins">
                 {station.name}
               </h3>
               <p className="text-sm text-secondary font-semibold">
-                {line.name}
+                {line.lineCode} - {line.name}
               </p>
             </div>
           </div>
@@ -94,7 +86,7 @@ const TransportInfo = ({ line, station, onClose }: TransportInfoProps) => {
               <Clock size={20} className="text-secondary mt-0.5 flex-shrink-0" />
               <div>
                 <p className="text-sm text-muted-foreground">Horaires</p>
-                <p className="font-semibold text-foreground">
+                <p className="text-sm font-semibold text-foreground">
                   {line.horaires}
                 </p>
               </div>
@@ -106,7 +98,7 @@ const TransportInfo = ({ line, station, onClose }: TransportInfoProps) => {
               <Zap size={20} className="text-accent mt-0.5 flex-shrink-0" />
               <div>
                 <p className="text-sm text-muted-foreground">Description</p>
-                <p className="font-semibold text-foreground">
+                <p className="text-sm font-semibold text-foreground">
                   {line.description}
                 </p>
               </div>
@@ -122,7 +114,7 @@ const TransportInfo = ({ line, station, onClose }: TransportInfoProps) => {
                 {line.quartiers.map((q) => (
                   <span
                     key={q}
-                    className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium"
+                    className="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium"
                   >
                     {q}
                   </span>
@@ -144,7 +136,11 @@ const TransportInfo = ({ line, station, onClose }: TransportInfoProps) => {
     );
   }
 
-  if (line && !station) {
+  // Proximity point (bus, taxi)
+  if (data.type === "proximity" && data.point && data.proximitySet) {
+    const point = data.point;
+    const proximitySet = data.proximitySet;
+
     return (
       <div className="bg-white rounded-2xl border border-border/30 p-6 relative">
         <button
@@ -156,76 +152,51 @@ const TransportInfo = ({ line, station, onClose }: TransportInfoProps) => {
 
         <div className="mb-6">
           <div className="flex items-center gap-3 mb-4">
-            <span className="text-3xl">{getTypeEmoji(line.type)}</span>
+            <span className="text-3xl">{getTypeEmoji(proximitySet.transportType)}</span>
             <div>
               <h3 className="text-xl font-bold text-primary font-poppins">
-                {line.name}
+                {point.name}
               </h3>
-              <p className="text-sm text-muted-foreground">
-                {getTypeLabel(line.type)}
+              <p className="text-sm text-secondary font-semibold">
+                {proximitySet.name}
               </p>
             </div>
           </div>
         </div>
 
         <div className="space-y-4">
-          <div className="flex items-start gap-3">
-            <Zap size={20} className="text-accent mt-0.5 flex-shrink-0" />
-            <div>
-              <p className="text-sm text-muted-foreground">À propos</p>
-              <p className="font-semibold text-foreground">{line.description}</p>
-            </div>
-          </div>
-
-          {line.horaires && (
+          {point.quartier && (
             <div className="flex items-start gap-3">
-              <Clock size={20} className="text-secondary mt-0.5 flex-shrink-0" />
+              <MapPin size={20} className="text-primary mt-0.5 flex-shrink-0" />
               <div>
-                <p className="text-sm text-muted-foreground">Horaires</p>
+                <p className="text-sm text-muted-foreground">Quartier</p>
                 <p className="font-semibold text-foreground">
-                  {line.horaires}
+                  {point.quartier}
                 </p>
               </div>
             </div>
           )}
 
-          {line.quartiers && line.quartiers.length > 0 && (
-            <div>
-              <p className="text-sm text-muted-foreground mb-2">
-                Zones couvertes
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {line.quartiers.map((q) => (
-                  <span
-                    key={q}
-                    className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium"
-                  >
-                    {q}
-                  </span>
-                ))}
+          {proximitySet.horaires && (
+            <div className="flex items-start gap-3">
+              <Clock size={20} className="text-secondary mt-0.5 flex-shrink-0" />
+              <div>
+                <p className="text-sm text-muted-foreground">Horaires</p>
+                <p className="text-sm font-semibold text-foreground">
+                  {proximitySet.horaires}
+                </p>
               </div>
             </div>
           )}
 
-          {line.routes && line.routes.length > 0 && (
-            <div>
-              <p className="text-sm text-muted-foreground mb-2">
-                Stations ({line.routes[0].stations.length})
-              </p>
-              <div className="space-y-2 max-h-48 overflow-y-auto">
-                {line.routes[0].stations.map((station: any, idx: number) => (
-                  <div
-                    key={idx}
-                    className="text-sm py-1 px-2 bg-muted/50 rounded hover:bg-muted transition-colors"
-                  >
-                    {station.name}
-                    {station.quartier && (
-                      <span className="text-xs text-muted-foreground ml-2">
-                        ({station.quartier})
-                      </span>
-                    )}
-                  </div>
-                ))}
+          {proximitySet.description && (
+            <div className="flex items-start gap-3">
+              <Zap size={20} className="text-accent mt-0.5 flex-shrink-0" />
+              <div>
+                <p className="text-sm text-muted-foreground">À propos</p>
+                <p className="text-sm font-semibold text-foreground">
+                  {proximitySet.description}
+                </p>
               </div>
             </div>
           )}

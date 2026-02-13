@@ -1,4 +1,4 @@
-import { Radio } from "@/components/ui/radio";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -52,17 +52,18 @@ const TransportFilters = ({
           <span className="text-xl">🚊</span>
           Tramway
         </h4>
-        <div className="space-y-3 ml-4">
+        <RadioGroup
+          value={selectedTramwayLine || ""}
+          onValueChange={(value) =>
+            onSelectTramwayLine(value ? value : null)
+          }
+          className="space-y-3 ml-2"
+        >
           {tramwayLines.map((line) => (
-            <div key={line.id} className="flex items-center gap-3">
-              <Radio
+            <div key={line.id} className="flex items-start gap-3">
+              <RadioGroupItem
+                value={line.id}
                 id={line.id}
-                checked={selectedTramwayLine === line.id}
-                onCheckedChange={() =>
-                  onSelectTramwayLine(
-                    selectedTramwayLine === line.id ? null : line.id
-                  )
-                }
                 className="mt-0.5"
               />
               <Label
@@ -78,7 +79,7 @@ const TransportFilters = ({
               </Label>
             </div>
           ))}
-        </div>
+        </RadioGroup>
       </div>
 
       {/* Busway Section */}
@@ -87,17 +88,18 @@ const TransportFilters = ({
           <span className="text-xl">🚌</span>
           Busway
         </h4>
-        <div className="space-y-3 ml-4">
+        <RadioGroup
+          value={selectedBusWayLine || ""}
+          onValueChange={(value) =>
+            onSelectBusWayLine(value ? value : null)
+          }
+          className="space-y-3 ml-2"
+        >
           {busWayLines.map((line) => (
-            <div key={line.id} className="flex items-center gap-3">
-              <Radio
+            <div key={line.id} className="flex items-start gap-3">
+              <RadioGroupItem
+                value={line.id}
                 id={line.id}
-                checked={selectedBusWayLine === line.id}
-                onCheckedChange={() =>
-                  onSelectBusWayLine(
-                    selectedBusWayLine === line.id ? null : line.id
-                  )
-                }
                 className="mt-0.5"
               />
               <Label
@@ -113,7 +115,7 @@ const TransportFilters = ({
               </Label>
             </div>
           ))}
-        </div>
+        </RadioGroup>
       </div>
 
       {/* Proximity Points Section */}

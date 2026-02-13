@@ -142,7 +142,7 @@ export const tramwayLines: TransportLine[] = [
     stations: [
       { name: "Gare Routière", lat: 33.5733, lng: -7.5898, quartier: "Centre" },
       { name: "Bernoussi", lat: 33.5650, lng: -7.5600, quartier: "Bernoussi" },
-      { lat: 33.5500, lng: -7.5300, quartier: "Bernoussi" },
+      { name: "Bernoussi Est", lat: 33.5500, lng: -7.5300, quartier: "Bernoussi" },
       { name: "Vers Aéroport", lat: 33.3750, lng: -7.5898, quartier: "Aéroport" },
     ],
     route: [
